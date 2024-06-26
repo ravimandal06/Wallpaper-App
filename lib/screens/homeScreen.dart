@@ -9,7 +9,35 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(0.5, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,14 +51,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) => const PixelScreen(),
                   ));
                 },
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32),
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Center(
                     child: Container(
-                      height: 140.h,
-                      color: Colors.blue[300],
-                      child: const Center(
-                        child: Text("Images From Pixel API"),
+                      padding: EdgeInsets.only(left: 16.w, right: 16.w),
+                      height: 60.h,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.blue[400],
+                          borderRadius: BorderRadius.circular(20.r)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Images From Pixel API",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
+                          ),
+                          SlideTransition(
+                            position: _animation,
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.white,
+                              size: 25.sp,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),

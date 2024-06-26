@@ -30,34 +30,21 @@ class _HomeNavigationState extends State<HomeNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _currentPage == 0 || _currentPage == 1
+          ? AppBar(
+              backgroundColor: Colors.blue[400],
+              title: Center(
+                child: Image.asset(
+                  "assets/vrit-logo-c.png",
+                  fit: BoxFit.contain,
+                  scale: 1.8,
+                ),
+              ),
+            )
+          : null,
       body: SafeArea(
         child: Column(
           children: [
-            Visibility(
-              visible: _currentPage == 0,
-              child: Container(
-                width: 390.w,
-                height: 60.h,
-                decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 173, 203, 228)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Vrit",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      const Icon(Icons.favorite_outline),
-                    ],
-                  ),
-                ),
-              ),
-            ),
             Expanded(
               child: PageView(
                 physics: const NeverScrollableScrollPhysics(),
@@ -133,6 +120,6 @@ class _HomeNavigationState extends State<HomeNavigation> {
   }
 
   List<Widget> getTabScreens() {
-    return [const HomeScreen(), LikedPhotosScreen(), ProfileScreen()];
+    return [const HomeScreen(), LikedPhotosScreen(), const ProfileScreen()];
   }
 }

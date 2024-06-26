@@ -1,11 +1,17 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
  <uses-feature
         android:name="android.software.live_wallpaper"
         android:required="true" />
-        <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+
     <application
         android:label="vrit"
         android:name="${applicationName}"
@@ -59,5 +65,9 @@
                 android:name="android.service.wallpaper"
                 android:resource="@xml/livewallpaper" />
         </service>
+         <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ActionBroadcastReceiver" android:exported="true"/>
+    <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.DismissedReceiver" android:exported="true"/>
+    <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ScheduledNotificationReceiver" android:exported="true"/>
+
     </application>
 </manifest>

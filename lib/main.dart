@@ -1,19 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vrit/firebase_options.dart';
 import 'package:vrit/homeNavigation.dart';
+
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:vrit/screens/auth.dart';
 import 'package:vrit/screens/homeScreen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:vrit/screens/splash_screen.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -50,7 +56,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const AuthCheck(),
+      child: const SplashScreen(),
     );
   }
 }

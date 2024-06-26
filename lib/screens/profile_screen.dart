@@ -6,9 +6,17 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vrit/main.dart';
+import 'package:timezone/timezone.dart' as tz;
+
+import 'package:provider/provider.dart' as pvm;
+import 'package:intl/intl.dart';
+import 'package:vrit/provider/user_provider.dart';
+import 'package:vrit/screens/auth.dart';
+import 'package:vrit/service/notification_service.dart';
 import 'package:vrit/widgets/form_field.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -102,17 +110,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  Future<void> _scheduleNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('47365d468', 'com.example.vrit',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false);
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'Happy Birthday', 'wish you HBD!', platformChannelSpecifics,
-        payload: 'item id 2');
+  void _signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    // pvm.Provider.of<UserProvider>(context, listen: false).setUser(null);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const SignInPage()),
+    );
   }
 
   @override
@@ -129,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.only(top: 10.h),
                 child: Center(
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Stack(
                         children: [
                           Container(
@@ -143,11 +147,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             child: GestureDetector(
-                              onTap: () async {},
+                              onTap: () {
+                                debugPrint(
+                                    "statement ${FirebaseAuth.instance.currentUser!.photoURL!}");
+                              },
                               child: CircleAvatar(
                                 radius: 50.0,
                                 backgroundColor: Colors.blue[100],
-                                backgroundImage: NetworkImage(downloadUrl),
+                                backgroundImage: NetworkImage(
+                                    downloadUrl.isEmpty
+                                        ? FirebaseAuth
+                                            .instance.currentUser!.photoURL!
+                                        : downloadUrl),
                                 child: (_uploading)
                                     ? const CircularProgressIndicator()
                                     : null,
@@ -202,47 +213,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 height: 24.h,
               ),
-              /**
-               * 
-                
-               */
               FormFields(
                   suffixIcon: Icon(Icons.calendar_today_rounded,
                       color: Colors.blue[300]),
                   onTap: () async {
-                    //   DateTime? pickedDate = await showDatePicker(
-                    //     builder: (context, child) {
-                    //       return Theme(
-                    //         data: Theme.of(context).copyWith(
-                    //           dialogBackgroundColor: Colors.grey.shade700,
-                    //           colorScheme: const ColorScheme.dark(),
-                    //         ),
-                    //         child: child!,
-                    //       );
-                    //     },
-                    //     context: context,
-                    //     initialDate: (dobController_.text.isNotEmpty)
-                    //         ? DateTime.parse(dobController_.text)
-                    //         : DateTime.now(),
-                    //     firstDate: DateTime(1920),
-                    //     lastDate: DateTime.now(),
-                    //   );
-                    //   if (pickedDate != null) {
-                    //     String formattedDate =
-                    //         pickedDate.toIso8601String().substring(0, 10);
-
-                    //     setState(() {
-                    //       dobController_.text = formattedDate;
-
-                    //       // Check if the selected date is today
-                    //       if (pickedDate.isAtSameMomentAs(DateTime.now())) {
-                    //         ScaffoldMessenger.of(context).showSnackBar(
-                    //           const SnackBar(content: Text('Happy B!')),
-                    //         );
-                    //         debugPrint("Printing Happy Birthday!");
-                    //       }
-                    //     });
-                    //   }
                     DateTime? pickedDate = await showDatePicker(
                       builder: (context, child) {
                         return Theme(
@@ -266,29 +240,89 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       setState(() {
                         dobController_.text = formattedDate;
-
-                        // Check if the selected date's month and day match today's month and day
                         DateTime today = DateTime.now();
                         if (pickedDate.month == today.month &&
                             pickedDate.day == today.day) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Happy Birthday!')),
-                          );
+                          String dob = dobController_.text;
+                          if (dob.isEmpty) return;
+
+                          DateTime parsedDate = DateTime.parse(dob);
+                          DateTime now = DateTime.now();
+
+                          if (parsedDate.month == now.month &&
+                              parsedDate.day == now.day) {
+                            String formattedDate =
+                                DateFormat("d'th' MMMM").format(parsedDate);
+                            try {
+                              setState(() {
+                                NotificationService().showNotification(
+                                  title: 'Happy Birthday!',
+                                  body:
+                                      'Wishing you a fantastic birthday today, $formattedDate!',
+                                );
+                              });
+                            } catch (e) {
+                              debugPrint("errrorrrrrr $e");
+                            }
+                          }
                         }
                       });
                     }
                   },
                   textEditingController: dobController_,
                   labelText: 'Date Of Birth'),
-              ElevatedButton(
-                  onPressed: () {
-                    _scheduleNotification();
-                  },
-                  child: const Text("Notification"))
+              Padding(
+                padding: EdgeInsets.only(top: 100.h),
+                child: Center(
+                  child: FilledButton.icon(
+                      onPressed: () {
+                        _signOut(context);
+                      },
+                      icon: const Icon(Icons.logout),
+                      label: const Text("Logout")),
+                ),
+              )
             ],
           ),
         ),
       )),
+    );
+  }
+
+  Future<void> _scheduleBirthdayNotification() async {
+    final now = DateTime.now();
+    DateTime birthday =
+        DateTime(now.year, 6, 23, 8, 0, 0); // Example birthday date
+
+    if (birthday.isBefore(now)) {
+      birthday = DateTime(now.year + 1, 6, 23, 8, 0, 0);
+    }
+
+    final scheduledNotificationDateTime =
+        tz.TZDateTime.from(birthday, tz.local);
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'birthday_notification_channel',
+      'Birthday Notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Happy Birthday!',
+      'Wishing you a wonderful day!',
+      scheduledNotificationDateTime,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 }
