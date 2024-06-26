@@ -1,37 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vrit/firebase_options.dart';
-import 'package:vrit/homeNavigation.dart';
+import 'package:vrit_tech/screens/auth.dart';
+import 'package:vrit_tech/screens/splash_screen.dart';
 
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:vrit/screens/auth.dart';
-import 'package:vrit/screens/homeScreen.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:vrit/screens/splash_screen.dart';
+import 'firebase_options.dart';
+import 'homeNavigation.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+FlutterLocalNotificationsPlugin();
 
-void main() async {
+
+void main()async {
   WidgetsFlutterBinding.ensureInitialized();
-  tz.initializeTimeZones();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()!
-      .requestNotificationsPermission();
-
-  //
   runApp(const MyApp());
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher'); // Use default Flutter icon
+  const InitializationSettings initializationSettings =
+  InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -60,6 +56,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 class AuthCheck extends StatelessWidget {
   const AuthCheck({super.key});

@@ -9,15 +9,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vrit/main.dart';
+import 'package:vrit_tech/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:provider/provider.dart' as pvm;
 import 'package:intl/intl.dart';
-import 'package:vrit/provider/user_provider.dart';
-import 'package:vrit/screens/auth.dart';
-import 'package:vrit/service/notification_service.dart';
-import 'package:vrit/widgets/form_field.dart';
+import 'package:vrit_tech/provider/user_provider.dart';
+import 'package:vrit_tech/screens/auth.dart';
+import 'package:vrit_tech/service/notification_service.dart';
+import 'package:vrit_tech/widgets/form_field.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -28,12 +28,24 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController dobController_ = TextEditingController();
-  final CollectionReference _reference =
-      FirebaseFirestore.instance.collection('vrit');
+  final CollectionReference _reference = FirebaseFirestore.instance.collection('vrit');
   bool _uploading = false;
   File? _imageFile;
   String downloadUrl = '';
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImageUrl();
+  }
+
+  Future<void> _loadProfileImageUrl() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      downloadUrl = prefs.getString('profileImageUrl') ?? '';
+    });
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -81,7 +93,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _uploadFile() async {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (_imageFile == null) return;
 
     setState(() {
@@ -89,15 +100,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     try {
-      final storageRef =
-          FirebaseStorage.instance.ref('images/${_imageFile!.path}');
+      final storageRef = FirebaseStorage.instance.ref('images/${_imageFile!.path}');
       final uploadTask = storageRef.putFile(_imageFile!);
       final snapshot = await uploadTask;
       downloadUrl = await snapshot.ref.getDownloadURL();
-      // await prefs.setString('action', downloadUrl);
-      debugPrint('printing the downloadUrl here $downloadUrl');
-      // final String? action = prefs.getString('action');
-      // debugPrint('printing the downloadUrl from sharedPreferences $action');
+
+      // Save downloadUrl to SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('profileImageUrl', downloadUrl);
 
       setState(() {
         _uploading = false;
@@ -146,19 +156,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 4,
                               ),
                             ),
-                            child: GestureDetector(
+                            child:
+                            GestureDetector(
                               onTap: () {
-                                debugPrint(
-                                    "statement ${FirebaseAuth.instance.currentUser!.photoURL!}");
+                                debugPrint("statement ${FirebaseAuth.instance.currentUser!.photoURL!}");
                               },
                               child: CircleAvatar(
                                 radius: 50.0,
                                 backgroundColor: Colors.blue[100],
                                 backgroundImage: NetworkImage(
-                                    downloadUrl.isEmpty
-                                        ? FirebaseAuth
-                                            .instance.currentUser!.photoURL!
-                                        : downloadUrl),
+                                  downloadUrl.isEmpty
+                                      ? FirebaseAuth.instance.currentUser!.photoURL!
+                                      : downloadUrl,
+                                ),
                                 child: (_uploading)
                                     ? const CircularProgressIndicator()
                                     : null,
@@ -288,30 +298,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
       )),
     );
   }
-
   Future<void> _scheduleBirthdayNotification() async {
     final now = DateTime.now();
-    DateTime birthday =
-        DateTime(now.year, 6, 23, 8, 0, 0); // Example birthday date
+    DateTime birthday = DateTime(now.year, 6, 23, 8, 0, 0); // Example birthday date
 
     if (birthday.isBefore(now)) {
       birthday = DateTime(now.year + 1, 6, 23, 8, 0, 0);
     }
 
-    final scheduledNotificationDateTime =
-        tz.TZDateTime.from(birthday, tz.local);
+    final scheduledNotificationDateTime = tz.TZDateTime.from(birthday, tz.local);
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
+    AndroidNotificationDetails(
       'birthday_notification_channel',
       'Birthday Notifications',
       importance: Importance.max,
       priority: Priority.high,
       showWhen: false,
+      icon: '@mipmap/ic_launcher', // Use default Flutter icon
     );
 
     const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
@@ -321,7 +329,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

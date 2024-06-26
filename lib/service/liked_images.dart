@@ -1,4 +1,4 @@
-import 'package:vrit/model/liked_images_model.dart';
+import 'package:vrit_tech/model/liked_images_model.dart';
 
 class LikedPhotoService {
   static List<LikedPhoto> _likedPhotos = [];
@@ -6,17 +6,18 @@ class LikedPhotoService {
   static List<LikedPhoto> get likedPhotos => _likedPhotos;
 
   static void addLikedPhoto(
-      String imageUrl, String name, String author, bool isLiked) {
+      String imageUrl, String name, String author) {
     _likedPhotos.add(LikedPhoto(
       imageUrl: imageUrl,
       name: name,
       likedDate: DateTime.now(),
       by: author,
-      likedImage: isLiked,
+      likedImage: true,
     ));
   }
 
   static void removeLikedPhoto(String imageUrl) {
     _likedPhotos.removeWhere((photo) => photo.imageUrl == imageUrl);
+
   }
 }

@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/file.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vrit/screens/liked_images_screen.dart';
-import 'package:vrit/service/liked_images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vrit_tech/screens/liked_images_screen.dart';
+import 'package:vrit_tech/service/liked_images.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
@@ -57,10 +58,12 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
   @override
   void initState() {
     super.initState();
+    _loadLikeStatus();
     goToHome = false;
   }
 
-  void likeImage(BuildContext context) {
+
+  void likeImage(BuildContext context) async {
     setState(() {
       _isLiked = !_isLiked;
     });
@@ -72,8 +75,17 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
         ),
       );
       LikedPhotoService.addLikedPhoto(widget.imageUrl, widget.imageName,
-          widget.auther, widget.isLiked); // Store liked photo
+          widget.auther); // Store liked photo
     }
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(widget.imageUrl, _isLiked);
+  }
+  Future<void> _loadLikeStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLiked = prefs.getBool(widget.imageUrl) ?? widget.isLiked;
+    });
   }
 
   Future<void> _setWallpaper() async {
@@ -159,7 +171,8 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25.r),
                         topRight: Radius.circular(25.r)),
-                    child: Image.network(
+                    child:
+                    Image.network(
                       widget.imageUrl,
                       fit: BoxFit.cover,
                       width: MediaQuery.of(context).size.width,
@@ -200,6 +213,7 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                         }
                       },
                     ),
+
                   ),
                   AnimatedContainer(
                     duration: const Duration(seconds: 1),
@@ -270,8 +284,8 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                               child: Row(
                                 children: [
                                   Icon(_isLiked
-                                      ? Icons.favorite_rounded
-                                      : Icons.favorite_outline_rounded),
+                                      ?Icons.favorite_rounded: Icons.favorite_outline_rounded
+                                  ),
                                   SizedBox(
                                     width: 15.w,
                                   ),

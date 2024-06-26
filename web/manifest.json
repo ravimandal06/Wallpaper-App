@@ -1,6 +1,6 @@
 {
-    "name": "vrit",
-    "short_name": "vrit",
+    "name": "vrit_tech",
+    "short_name": "vrit_tech",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

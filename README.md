@@ -1,4 +1,4 @@
-# vrit
+# vrit_tech
 
 A new Flutter project.
 

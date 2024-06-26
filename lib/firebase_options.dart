@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -42,17 +48,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBzPih9bAYpJvjWyB9GYkeRb0JiBs8yuEk',
-    appId: '1:1078690064541:web:8f53363be78587e6620c74',
+    appId: '1:1078690064541:web:0fcddfcdc89bddd4620c74',
     messagingSenderId: '1078690064541',
     projectId: 'vrit-7c4d1',
     authDomain: 'vrit-7c4d1.firebaseapp.com',
     storageBucket: 'vrit-7c4d1.appspot.com',
-    measurementId: 'G-PTEBGHPKKT',
+    measurementId: 'G-7Q9F7WLNVG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCBVUHDQJbZvxjSlyiHs8VoAXmFgzck7aA',
-    appId: '1:1078690064541:android:1de3b6829da09100620c74',
+    appId: '1:1078690064541:android:a584d41d894039c7620c74',
     messagingSenderId: '1078690064541',
     projectId: 'vrit-7c4d1',
     storageBucket: 'vrit-7c4d1.appspot.com',
@@ -60,33 +66,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC8vc470gfGSzdTvkbETdPbL5JNn3pzi-0',
-    appId: '1:1078690064541:ios:ca46472bfb661fc3620c74',
+    appId: '1:1078690064541:ios:781f00ce3d13b815620c74',
     messagingSenderId: '1078690064541',
     projectId: 'vrit-7c4d1',
     storageBucket: 'vrit-7c4d1.appspot.com',
     androidClientId: '1078690064541-4s8og73q03du7pko84q1oh89vdtj3kvl.apps.googleusercontent.com',
-    iosClientId: '1078690064541-mpafg1a7hrm5h16lvrcbpvnquss4fuol.apps.googleusercontent.com',
-    iosBundleId: 'com.example.vrit',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC8vc470gfGSzdTvkbETdPbL5JNn3pzi-0',
-    appId: '1:1078690064541:ios:ca46472bfb661fc3620c74',
-    messagingSenderId: '1078690064541',
-    projectId: 'vrit-7c4d1',
-    storageBucket: 'vrit-7c4d1.appspot.com',
-    androidClientId: '1078690064541-4s8og73q03du7pko84q1oh89vdtj3kvl.apps.googleusercontent.com',
-    iosClientId: '1078690064541-mpafg1a7hrm5h16lvrcbpvnquss4fuol.apps.googleusercontent.com',
-    iosBundleId: 'com.example.vrit',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBzPih9bAYpJvjWyB9GYkeRb0JiBs8yuEk',
-    appId: '1:1078690064541:web:2bd90e7bf41ab366620c74',
-    messagingSenderId: '1078690064541',
-    projectId: 'vrit-7c4d1',
-    authDomain: 'vrit-7c4d1.firebaseapp.com',
-    storageBucket: 'vrit-7c4d1.appspot.com',
-    measurementId: 'G-24W18VW00C',
+    iosClientId: '1078690064541-av74pid04hjm4aq7n0savfs3fdb5rtcq.apps.googleusercontent.com',
+    iosBundleId: 'com.example.vritTech',
   );
 }
