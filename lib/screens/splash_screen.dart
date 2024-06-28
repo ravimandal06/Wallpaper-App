@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vrit_tech/main.dart';
+import 'package:vrit_interview/main.dart';
 import 'dart:math';
 
 class SplashScreen extends StatefulWidget {

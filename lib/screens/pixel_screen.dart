@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:vrit_tech/screens/pixel_detail_screen.dart';
+import 'package:vrit_interview/screens/pixel_detail_screen.dart';
 
 class PixelScreen extends StatefulWidget {
   const PixelScreen({Key? key}) : super(key: key);

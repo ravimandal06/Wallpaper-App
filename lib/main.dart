@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vrit_tech/screens/auth.dart';
-import 'package:vrit_tech/screens/splash_screen.dart';
+import 'package:vrit_interview/screens/auth.dart';
+import 'package:vrit_interview/screens/splash_screen.dart';
 
 import 'firebase_options.dart';
 import 'homeNavigation.dart';
+
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();

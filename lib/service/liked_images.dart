@@ -1,4 +1,4 @@
-import 'package:vrit_tech/model/liked_images_model.dart';
+import 'package:vrit_interview/model/liked_images_model.dart';
 
 class LikedPhotoService {
   static List<LikedPhoto> _likedPhotos = [];

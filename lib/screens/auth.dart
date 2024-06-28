@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:vrit_tech/homeNavigation.dart';
-import 'package:vrit_tech/screens/homeScreen.dart';
+import 'package:vrit_interview/homeNavigation.dart';
+import 'package:vrit_interview/screens/homeScreen.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});

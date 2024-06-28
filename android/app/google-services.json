@@ -1,95 +1,26 @@
 {
   "project_info": {
-    "project_number": "1078690064541",
-    "project_id": "vrit-7c4d1",
-    "storage_bucket": "vrit-7c4d1.appspot.com"
+    "project_number": "599040382391",
+    "project_id": "vrit-41a51",
+    "storage_bucket": "vrit-41a51.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1078690064541:android:1de3b6829da09100620c74",
+        "mobilesdk_app_id": "1:599040382391:android:7bec6f9b7c8f1ae73a4432",
         "android_client_info": {
-          "package_name": "com.example.vrit"
+          "package_name": "com.example.vrit_interview"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1078690064541-4s8og73q03du7pko84q1oh89vdtj3kvl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.vrit",
-            "certificate_hash": "62e42eecc4750883e77803b1b4ea531d52a1295d"
-          }
-        },
-        {
-          "client_id": "1078690064541-v121t9bm7rldcv1kfslo27e8v188u6iv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.vrit",
-            "certificate_hash": "ca3c4d24088c4ac70a4a66fc93502fd2a864b7d6"
-          }
-        },
-        {
-          "client_id": "1078690064541-h50klitbmf07rm1irg2t6l5c8m1q1liq.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCBVUHDQJbZvxjSlyiHs8VoAXmFgzck7aA"
+          "current_key": "AIzaSyCQC8wdf-G8quCciyzki4YKs3h-tbqNXjw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1078690064541-h50klitbmf07rm1irg2t6l5c8m1q1liq.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1078690064541-mpafg1a7hrm5h16lvrcbpvnquss4fuol.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.vrit"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1078690064541:android:a584d41d894039c7620c74",
-        "android_client_info": {
-          "package_name": "com.example.vrit_tech"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1078690064541-h50klitbmf07rm1irg2t6l5c8m1q1liq.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCBVUHDQJbZvxjSlyiHs8VoAXmFgzck7aA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1078690064541-h50klitbmf07rm1irg2t6l5c8m1q1liq.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1078690064541-mpafg1a7hrm5h16lvrcbpvnquss4fuol.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.vrit"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vrit_tech/screens/homeScreen.dart';
-import 'package:vrit_tech/screens/liked_images_screen.dart';
-import 'package:vrit_tech/screens/profile_screen.dart';
+import 'package:vrit_interview/screens/homeScreen.dart';
+import 'package:vrit_interview/screens/liked_images_screen.dart';
+import 'package:vrit_interview/screens/profile_screen.dart';
 
 class HomeNavigation extends StatefulWidget {
   const HomeNavigation({

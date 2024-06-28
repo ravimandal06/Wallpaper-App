@@ -4,9 +4,9 @@ import 'package:flutter_cache_manager/file.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vrit_tech/screens/liked_images_screen.dart';
-import 'package:vrit_tech/service/liked_images.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:vrit_interview/screens/liked_images_screen.dart';
+import 'package:vrit_interview/service/liked_images.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 // import 'package:wallpaper_manager_flutter/wallpaper_manager_flutter.dart';
@@ -32,7 +32,7 @@ class PhotoDetailScreen extends StatefulWidget {
 }
 
 class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
-  static const platform = MethodChannel('example.com/channel');
+  static const platform = MethodChannel('com.example.vrit_interview/channel');
   String home = "home",
       lock = "Lock Screen",
       both = "Both Screen",
@@ -63,6 +63,46 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
   }
 
 
+
+  Future<void> setWallpaperWithProgress(BuildContext context, String url,
+      int wallpaperType) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 16),
+                Text("Setting wallpaper..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    await _setWallpaper(url, wallpaperType);
+
+    Navigator.of(context).pop(); // Dismiss the progress dialog
+  }
+  Future<void> _setWallpaper(String url, int wallpaperType) async {
+    print("URL: $url, Type: $wallpaperType"); // Debugging
+    try {
+      final result = await platform.invokeMethod(
+          'setWallpaper', [url, wallpaperType]);
+      print('Wallpaper Updated.... $result');
+    } on PlatformException catch (e) {
+      print("Failed to Set Wallpaper: '${e.message}'.");
+    }
+  }
+
+
+
   void likeImage(BuildContext context) async {
     setState(() {
       _isLiked = !_isLiked;
@@ -88,34 +128,9 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
     });
   }
 
-  Future<void> _setWallpaper() async {
-    try {
-      debugPrint("printing first ${widget.imageUrl}");
-      await platform.invokeMethod('setWallpaper', widget.imageUrl);
-    } on PlatformException catch (e) {
-      print(
-          "From pixel details screen - Failed to set wallpaper: '${e.message}'.");
-    }
-  }
 
-  // Future<void> setWallpaper() async {
-  //   try {
-  //     // Retrieve the cached image file
-  //     File cachedImage =
-  //         await DefaultCacheManager().getSingleFile(widget.imageUrl);
 
-  //     // Choose screen type
-  //     int location = WallpaperManagerFlutter.HOME_SCREEN;
 
-  //     // Set wallpaper from file
-  //     await WallpaperManagerFlutter()
-  //         .setwallpaperfromFile(cachedImage, location);
-
-  //     print('Wallpaper set successfully');
-  //   } catch (e) {
-  //     print('Error setting wallpaper: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -238,8 +253,9 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: _setWallpaper,
-                          child: AnimatedContainer(
+                          onTap: () async {await setWallpaperWithProgress(context, widget.imageUrl, 3);},
+                          child:
+                          AnimatedContainer(
                             duration: const Duration(microseconds: 400),
                             curve: Curves.easeIn,
                             height: 65.h,
@@ -284,13 +300,18 @@ class _PhotoDetailScreenState extends State<PhotoDetailScreen> {
                               child: Row(
                                 children: [
                                   Icon(_isLiked
-                                      ?Icons.favorite_rounded: Icons.favorite_outline_rounded
+                                      ?
+                                  Icons.favorite_outline_rounded
+
+                                      :
+                                  Icons.favorite_rounded
+
                                   ),
                                   SizedBox(
                                     width: 15.w,
                                   ),
                                   Text(
-                                    _isLiked ? "Liked" : "Like",
+                                    _isLiked ? "Like" : "Liked",
                                     style: TextStyle(
                                         fontSize: 16.sp,
                                         color: Colors.black,

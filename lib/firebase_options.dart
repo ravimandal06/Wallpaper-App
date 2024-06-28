@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,32 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBzPih9bAYpJvjWyB9GYkeRb0JiBs8yuEk',
-    appId: '1:1078690064541:web:0fcddfcdc89bddd4620c74',
-    messagingSenderId: '1078690064541',
-    projectId: 'vrit-7c4d1',
-    authDomain: 'vrit-7c4d1.firebaseapp.com',
-    storageBucket: 'vrit-7c4d1.appspot.com',
-    measurementId: 'G-7Q9F7WLNVG',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCBVUHDQJbZvxjSlyiHs8VoAXmFgzck7aA',
-    appId: '1:1078690064541:android:a584d41d894039c7620c74',
-    messagingSenderId: '1078690064541',
-    projectId: 'vrit-7c4d1',
-    storageBucket: 'vrit-7c4d1.appspot.com',
+    apiKey: 'AIzaSyCQC8wdf-G8quCciyzki4YKs3h-tbqNXjw',
+    appId: '1:599040382391:android:7bec6f9b7c8f1ae73a4432',
+    messagingSenderId: '599040382391',
+    projectId: 'vrit-41a51',
+    storageBucket: 'vrit-41a51.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC8vc470gfGSzdTvkbETdPbL5JNn3pzi-0',
-    appId: '1:1078690064541:ios:781f00ce3d13b815620c74',
-    messagingSenderId: '1078690064541',
-    projectId: 'vrit-7c4d1',
-    storageBucket: 'vrit-7c4d1.appspot.com',
-    androidClientId: '1078690064541-4s8og73q03du7pko84q1oh89vdtj3kvl.apps.googleusercontent.com',
-    iosClientId: '1078690064541-av74pid04hjm4aq7n0savfs3fdb5rtcq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.vritTech',
+    apiKey: 'AIzaSyD2xSSf936n850Z4eKRKRb3y-VCBC64yTg',
+    appId: '1:599040382391:ios:7b37d78b53bd4ee53a4432',
+    messagingSenderId: '599040382391',
+    projectId: 'vrit-41a51',
+    storageBucket: 'vrit-41a51.appspot.com',
+    iosBundleId: 'com.example.vritInterview',
   );
+
 }

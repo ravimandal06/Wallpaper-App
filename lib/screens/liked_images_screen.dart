@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vrit_tech/service/liked_images.dart';
+import 'package:vrit_interview/service/liked_images.dart';
 
 class LikedPhotosScreen extends StatefulWidget {
   LikedPhotosScreen({super.key, this.isLikedScreen = false});

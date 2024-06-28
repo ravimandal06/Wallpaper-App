@@ -9,15 +9,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vrit_tech/main.dart';
+import 'package:vrit_interview/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:provider/provider.dart' as pvm;
 import 'package:intl/intl.dart';
-import 'package:vrit_tech/provider/user_provider.dart';
-import 'package:vrit_tech/screens/auth.dart';
-import 'package:vrit_tech/service/notification_service.dart';
-import 'package:vrit_tech/widgets/form_field.dart';
+import 'package:vrit_interview/provider/user_provider.dart';
+import 'package:vrit_interview/screens/auth.dart';
+import 'package:vrit_interview/service/notification_service.dart';
+import 'package:vrit_interview/widgets/form_field.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

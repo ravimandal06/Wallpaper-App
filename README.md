@@ -1,4 +1,4 @@
-# vrit_tech
+# vrit_interview
 
 A new Flutter project.
 
